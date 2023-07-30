@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33829.357
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FreeAccount.Api", "FreeAccount.Api\FreeAccount.Api.csproj", "{3D572539-1A0D-483F-804C-C0673C1FAE3D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{99BB7A11-992B-43B8-A703-FDD93B5626F9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - Application", "1 - Application", "{36BA5197-7D8A-4846-8F23-D39B17E681D9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2 - Domain", "2 - Domain", "{74897EDD-D9C2-4581-9927-062846B9161E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 - Ioc", "3 - Ioc", "{FBD7C2E4-1BAB-4312-A9D6-3E2D2E988C10}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4 - Infrastructure", "4 - Infrastructure", "{7DD255F3-04A3-4F26-A9BA-13863F4F215D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3D572539-1A0D-483F-804C-C0673C1FAE3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D572539-1A0D-483F-804C-C0673C1FAE3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D572539-1A0D-483F-804C-C0673C1FAE3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D572539-1A0D-483F-804C-C0673C1FAE3D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3D572539-1A0D-483F-804C-C0673C1FAE3D} = {36BA5197-7D8A-4846-8F23-D39B17E681D9}
+		{36BA5197-7D8A-4846-8F23-D39B17E681D9} = {99BB7A11-992B-43B8-A703-FDD93B5626F9}
+		{74897EDD-D9C2-4581-9927-062846B9161E} = {99BB7A11-992B-43B8-A703-FDD93B5626F9}
+		{FBD7C2E4-1BAB-4312-A9D6-3E2D2E988C10} = {99BB7A11-992B-43B8-A703-FDD93B5626F9}
+		{7DD255F3-04A3-4F26-A9BA-13863F4F215D} = {99BB7A11-992B-43B8-A703-FDD93B5626F9}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {26B59D56-D353-4EB3-B6A0-F33AFC99F0A3}
+	EndGlobalSection
+EndGlobal
