@@ -12,7 +12,7 @@ namespace FreeAccount.Api.Controllers
         public async Task<IActionResult> Create(CreateAccountRequest request, CancellationToken cancellationToken)
         {
             if (!IsValidNif(request.Nif))
-                return BadRequest("Nif inválido. Favor verificar se o Nif possui apenas 9 digitos.");
+                return BadRequest("Nif inválido. Favor verificar se o Nif possui apenas 9 digitos numéricos.");
 
             string folderPath = @"C:\FreeAccount\Accounts";
             string filePath = Path.Combine(folderPath, $"{request.Nif}.txt");
