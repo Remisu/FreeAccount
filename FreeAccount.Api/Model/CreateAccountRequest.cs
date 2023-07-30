@@ -4,10 +4,8 @@
     {
         public string Name { get; set; }
         public string Email { get; set; }
-        public int Nif { get; set; }
-
-        //criar saldo ...decimal
-        //
+        public string Nif { get; set; }
+        public decimal Saldo { get; set; }
 
     }
 }
