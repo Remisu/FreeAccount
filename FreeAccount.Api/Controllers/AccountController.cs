@@ -8,16 +8,14 @@ namespace FreeAccount.Api.Controllers
     [Route("[controller]")]
     public class AccountController : Controller
     {
-
         [HttpPost]
         public async Task<IActionResult> Create(CreateAccountRequest request, CancellationToken cancellationToken)
         {
-            if (!IsValidNif(request.Nif))
-                return BadRequest("Nif inválido. Favor verificar se o Nif possui apenas 9 digitos numéricos.");
+            if (!ValidateNif(request.Nif, out IActionResult badNifResult))
+                return badNifResult;
 
             if (request.Saldo < 0)
                 return BadRequest("Saldo inválido. O saldo deve ser maior ou igual a 0.");
-
 
             string folderPath = @"C:\FreeAccount\Accounts";
             string filePath = Path.Combine(folderPath, $"{request.Nif}.txt");
@@ -46,8 +44,8 @@ namespace FreeAccount.Api.Controllers
         [HttpGet("{nif}")]
         public IActionResult GetAccountData(string nif)
         {
-            if (!IsValidNif(nif))
-                return BadRequest("Nif inválido. Favor verificar se o Nif possui apenas 9 dígitos numéricos.");
+            if (!ValidateNif(nif, out IActionResult badNifResult))
+                return badNifResult;
 
             string folderPath = @"C:\FreeAccount\Accounts";
             string filePath = Path.Combine(folderPath, $"{nif}.txt");
@@ -79,8 +77,8 @@ namespace FreeAccount.Api.Controllers
         [HttpPut("{nif}")]
         public IActionResult UpdateAccountData(string nif, [FromBody] UpdateAccountRequest updateRequest)
         {
-            if (!IsValidNif(nif))
-                return BadRequest("Nif inválido. Favor verificar se o Nif possui apenas 9 dígitos numéricos.");
+            if (!ValidateNif(nif, out IActionResult badNifResult))
+                return badNifResult;
 
             string folderPath = @"C:\FreeAccount\Accounts";
             string filePath = Path.Combine(folderPath, $"{nif}.txt");
@@ -93,7 +91,7 @@ namespace FreeAccount.Api.Controllers
                 return BadRequest("Formato inválido do arquivo.");
 
             string name = lines[0].Replace("Nome: ", "");
-            string email = lines[1].Replace("Email: ", ""); 
+            string email = lines[1].Replace("Email: ", "");
 
             if (!string.IsNullOrEmpty(updateRequest.Name))
                 name = updateRequest.Name;
@@ -110,14 +108,15 @@ namespace FreeAccount.Api.Controllers
             return Ok("Dados da conta atualizados com sucesso.");
         }
 
-        private bool IsValidNif(string nif)
+        private bool ValidateNif(string nif, out IActionResult result)
         {
-            if (!nif.All(char.IsDigit))
+            if (!nif.All(char.IsDigit) || nif.Length != 9)
+            {
+                result = BadRequest("Nif inválido. Favor verificar se o Nif possui apenas 9 dígitos numéricos.");
                 return false;
+            }
 
-            if (nif.Length != 9)
-                return false;
-
+            result = null;
             return true;
         }
     }
