@@ -8,6 +8,12 @@ namespace FreeAccount.Api.Controllers
     [Route("[controller]")]
     public class AccountController : Controller
     {
+        /// <summary>
+        /// TESTE
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> Create(CreateAccountRequest request, CancellationToken cancellationToken)
         {
