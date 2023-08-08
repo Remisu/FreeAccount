@@ -9,12 +9,14 @@ namespace FreeAccount.Api.Controllers
     public class AccountController : Controller
     {
         /// <summary>
-        /// TESTE
+        /// Cria uma nova conta com os dados fornecidos.
         /// </summary>
-        /// <param name="request"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="request">Os dados para a criação da conta.</param>
+        /// <param name="cancellationToken">Token de cancelamento da operação assíncrona.</param>
+        /// <returns>Um objeto contendo a resposta da criação da conta.</returns>
         [HttpPost]
+        [ProducesResponseType(typeof(CreateAccountResponse), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Create(CreateAccountRequest request, CancellationToken cancellationToken)
         {
             if (!ValidateNif(request.Nif, out IActionResult badNifResult))
@@ -47,7 +49,15 @@ namespace FreeAccount.Api.Controllers
             return Ok(createAccountResponse);
         }
 
+        /// <summary>
+        /// Obtém os dados de uma conta com base no NIF fornecido.
+        /// </summary>
+        /// <param name="nif">O NIF da conta a ser recuperada.</param>
+        /// <returns>Um objeto contendo os dados da conta.</returns>
         [HttpGet("{nif}")]
+        [ProducesResponseType(typeof(AccountDataResponse), 200)]
+        [ProducesResponseType(typeof(string), 400)]
+        [ProducesResponseType(typeof(string), 404)]
         public IActionResult GetAccountData(string nif)
         {
             if (!ValidateNif(nif, out IActionResult badNifResult))
@@ -80,7 +90,16 @@ namespace FreeAccount.Api.Controllers
             return Ok(accountData);
         }
 
+        /// <summary>
+        /// Atualiza os dados de uma conta com base no NIF fornecido.
+        /// </summary>
+        /// <param name="nif">O NIF da conta a ser atualizada.</param>
+        /// <param name="updateRequest">Os dados atualizados da conta.</param>
+        /// <returns>Uma mensagem de sucesso indicando a atualização da conta.</returns>
         [HttpPut("{nif}")]
+        [ProducesResponseType(typeof(string), 200)]
+        [ProducesResponseType(typeof(string), 400)]
+        [ProducesResponseType(typeof(string), 404)]
         public IActionResult UpdateAccountData(string nif, [FromBody] UpdateAccountRequest updateRequest)
         {
             if (!ValidateNif(nif, out IActionResult badNifResult))
