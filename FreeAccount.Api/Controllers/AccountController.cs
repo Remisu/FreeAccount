@@ -117,6 +117,7 @@ namespace FreeAccount.Api.Controllers
 
             string name = lines[0].Replace("Nome: ", "");
             string email = lines[1].Replace("Email: ", "");
+            string saldo = lines[2];
 
             if (!string.IsNullOrEmpty(updateRequest.Name))
                 name = updateRequest.Name;
@@ -124,10 +125,14 @@ namespace FreeAccount.Api.Controllers
             if (!string.IsNullOrEmpty(updateRequest.Email))
                 email = updateRequest.Email;
 
+            //if (!string.IsNullOrEmpty(updateRequest.Saldo))
+            //    saldo = updateRequest.Saldo;
+
             using (StreamWriter writer = new StreamWriter(filePath))
             {
                 writer.WriteLine($"Nome: {name}");
                 writer.WriteLine($"Email: {email}");
+                writer.WriteLine($"Saldo: {saldo}");
             }
 
             return Ok("Dados da conta atualizados com sucesso.");
