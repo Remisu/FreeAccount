@@ -22,7 +22,7 @@ namespace FreeAccount.Api.Controllers
             if (!ValidateNif(request.Nif, out IActionResult badNifResult))
                 return badNifResult;
 
-            if (request.Saldo < 0)
+            if (request.Amount < 0)
                 return BadRequest("Saldo inválido. O saldo deve ser maior ou igual a 0.");
 
             string folderPath = @"C:\FreeAccount\Accounts";
@@ -38,7 +38,7 @@ namespace FreeAccount.Api.Controllers
             {
                 writer.WriteLine($"Nome: {request.Name}");
                 writer.WriteLine($"Email: {request.Email}");
-                writer.WriteLine($"Saldo: {request.Saldo}");
+                writer.WriteLine($"Saldo: {request.Amount}");
             }
 
             var createAccountResponse = new CreateAccountResponse
@@ -84,7 +84,7 @@ namespace FreeAccount.Api.Controllers
                 Nif = nif,
                 Name = name,
                 Email = email,
-                Saldo = saldo
+                Amount = saldo
             };
 
             return Ok(accountData);
@@ -125,14 +125,11 @@ namespace FreeAccount.Api.Controllers
             if (!string.IsNullOrEmpty(updateRequest.Email))
                 email = updateRequest.Email;
 
-            //if (!string.IsNullOrEmpty(updateRequest.Saldo))
-            //    saldo = updateRequest.Saldo;
-
             using (StreamWriter writer = new StreamWriter(filePath))
             {
                 writer.WriteLine($"Nome: {name}");
                 writer.WriteLine($"Email: {email}");
-                writer.WriteLine($"Saldo: {saldo}");
+                writer.WriteLine(saldo);
             }
 
             return Ok("Dados da conta atualizados com sucesso.");

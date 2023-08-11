@@ -5,6 +5,6 @@
         public string Nif { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
-        public decimal Saldo { get; set; }
+        public decimal Amount { get; set; }
     }
 }
