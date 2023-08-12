@@ -24,6 +24,11 @@ namespace FreeAccount.Api.Controllers
                 return BadRequest("NIF inválido.");
             }
 
+            if (transferRequest.FromNif == transferRequest.ToNif)
+            {
+                return BadRequest("Não é permitida transferência para o mesmo NIF.");
+            }
+
             string fromFilePath = Path.Combine(_folderPath, $"{transferRequest.FromNif}.txt");
             string toFilePath = Path.Combine(_folderPath, $"{transferRequest.ToNif}.txt");
 
@@ -84,6 +89,7 @@ namespace FreeAccount.Api.Controllers
 
             return Ok("Transferência realizada com sucesso.");
         }
+
 
         [HttpPost("add-balance")]
         [ProducesResponseType(typeof(string), 200)]

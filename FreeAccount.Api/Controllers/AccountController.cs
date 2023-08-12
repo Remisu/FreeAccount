@@ -135,6 +135,43 @@ namespace FreeAccount.Api.Controllers
             return Ok("Dados da conta atualizados com sucesso.");
         }
 
+        /// <summary>
+        /// Exclui uma conta com base no NIF fornecido, desde que o saldo seja zero.
+        /// </summary>
+        /// <param name="nif">O NIF da conta a ser excluída.</param>
+        /// <returns>Uma mensagem de sucesso indicando a exclusão da conta.</returns>
+        [HttpDelete("{nif}")]
+        [ProducesResponseType(typeof(string), 200)]
+        [ProducesResponseType(typeof(string), 400)]
+        [ProducesResponseType(typeof(string), 404)]
+        [ProducesResponseType(typeof(string), 409)]
+        public IActionResult DeleteAccount(string nif)
+        {
+            if (!ValidateNif(nif, out IActionResult badNifResult))
+                return badNifResult;
+
+            string folderPath = @"C:\FreeAccount\Accounts";
+            string filePath = Path.Combine(folderPath, $"{nif}.txt");
+
+            if (!System.IO.File.Exists(filePath))
+                return NotFound("A conta não existe.");
+
+            string[] lines = System.IO.File.ReadAllLines(filePath);
+            if (lines.Length < 3)
+                return BadRequest("Formato inválido do arquivo.");
+
+            decimal saldo;
+            if (!decimal.TryParse(lines[2].Replace("Saldo: ", ""), out saldo))
+                return BadRequest("Formato inválido do saldo.");
+
+            if (saldo != 0)
+                return Conflict("O saldo da conta não está zerado. Não é possível excluir a conta.");
+
+            System.IO.File.Delete(filePath);
+
+            return Ok("Conta excluída com sucesso.");
+        }
+
         private bool ValidateNif(string nif, out IActionResult result)
         {
             if (!nif.All(char.IsDigit) || nif.Length != 9)
