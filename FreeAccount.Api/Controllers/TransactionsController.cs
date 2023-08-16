@@ -10,8 +10,23 @@ namespace FreeAccount.Api.Controllers
     [Route("api/[controller]")]
     public class TransactionsController : ControllerBase
     {
-        private readonly string _folderPath = @"C:\FreeAccount\Accounts";
+        private readonly string _folderPath;
 
+        public TransactionsController()
+        {
+            string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            _folderPath = Path.Combine(documentsPath, "FreeAccount", "Accounts");
+
+            if (!Directory.Exists(_folderPath))
+            {
+                Directory.CreateDirectory(_folderPath);
+            }
+        }
+        /// <summary>
+        /// Realiza uma transferência de saldo entre duas contas com base nos dados fornecidos.
+        /// </summary>
+        /// <param name="transferRequest">Os dados da transferência.</param>
+        /// <returns>Uma mensagem indicando o resultado da transferência.</returns>
         [HttpPost("transfer")]
         [ProducesResponseType(typeof(string), 200)]
         [ProducesResponseType(typeof(string), 400)]
@@ -91,6 +106,11 @@ namespace FreeAccount.Api.Controllers
         }
 
 
+        /// <summary>
+        /// Adiciona um valor ao saldo de uma conta com base nos dados fornecidos.
+        /// </summary>
+        /// <param name="addBalanceRequest">Os dados para adicionar saldo à conta.</param>
+        /// <returns>Uma mensagem indicando o resultado da adição de saldo.</returns>
         [HttpPost("add-balance")]
         [ProducesResponseType(typeof(string), 200)]
         [ProducesResponseType(typeof(string), 400)]

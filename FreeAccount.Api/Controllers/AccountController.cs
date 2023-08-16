@@ -8,6 +8,18 @@ namespace FreeAccount.Api.Controllers
     [Route("[controller]")]
     public class AccountController : Controller
     {
+        private readonly string _folderPath;
+
+        public AccountController()
+        {
+            string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            _folderPath = Path.Combine(documentsPath, "FreeAccount", "Accounts");
+
+            if (!Directory.Exists(_folderPath))
+            {
+                Directory.CreateDirectory(_folderPath);
+            }
+        }
         /// <summary>
         /// Cria uma nova conta com os dados fornecidos.
         /// </summary>
@@ -25,7 +37,7 @@ namespace FreeAccount.Api.Controllers
             if (request.Amount < 0)
                 return BadRequest("Saldo inválido. O saldo deve ser maior ou igual a 0.");
 
-            string folderPath = @"C:\FreeAccount\Accounts";
+            string folderPath = _folderPath;
             string filePath = Path.Combine(folderPath, $"{request.Nif}.txt");
 
             if (!Directory.Exists(folderPath))
@@ -90,14 +102,8 @@ namespace FreeAccount.Api.Controllers
             return Ok(accountData);
         }
 
-        /// <summary>
-        /// Atualiza os dados de uma conta com base no NIF fornecido.
-        /// </summary>
-        /// <param name="nif">O NIF da conta a ser atualizada.</param>
-        /// <param name="updateRequest">Os dados atualizados da conta.</param>
-        /// <returns>Uma mensagem de sucesso indicando a atualização da conta.</returns>
         [HttpPut("{nif}")]
-        [ProducesResponseType(typeof(string), 200)]
+        [ProducesResponseType(typeof(UpdateAccountRequest), 200)]
         [ProducesResponseType(typeof(string), 400)]
         [ProducesResponseType(typeof(string), 404)]
         public IActionResult UpdateAccountData(string nif, [FromBody] UpdateAccountRequest updateRequest)
@@ -132,7 +138,13 @@ namespace FreeAccount.Api.Controllers
                 writer.WriteLine(saldo);
             }
 
-            return Ok("Dados da conta atualizados com sucesso.");
+            var updatedAccountData = new UpdateAccountRequest
+            {
+                Name = name,
+                Email = email
+            };
+
+            return Ok(updatedAccountData);
         }
 
         /// <summary>
