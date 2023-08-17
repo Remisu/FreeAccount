@@ -1,5 +1,6 @@
 ﻿using FreeAccount.Api.Model;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.RegularExpressions;
 using System.IO;
 
 namespace FreeAccount.Api.Controllers
@@ -37,6 +38,9 @@ namespace FreeAccount.Api.Controllers
             if (request.Amount < 0)
                 return BadRequest("Saldo inválido. O saldo deve ser maior ou igual a 0.");
 
+            if (!IsValidEmail(request.Email))
+                return BadRequest("Email inválido.");
+
             string folderPath = _folderPath;
             string filePath = Path.Combine(folderPath, $"{request.Nif}.txt");
 
@@ -61,6 +65,12 @@ namespace FreeAccount.Api.Controllers
             return Ok(createAccountResponse);
         }
 
+        private bool IsValidEmail(string email)
+        {
+            string pattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
+            return Regex.IsMatch(email, pattern);
+        }
+
         /// <summary>
         /// Obtém os dados de uma conta com base no NIF fornecido.
         /// </summary>
@@ -75,7 +85,7 @@ namespace FreeAccount.Api.Controllers
             if (!ValidateNif(nif, out IActionResult badNifResult))
                 return badNifResult;
 
-            string folderPath = @"C:\FreeAccount\Accounts";
+            string folderPath = _folderPath;
             string filePath = Path.Combine(folderPath, $"{nif}.txt");
 
             if (!System.IO.File.Exists(filePath))
@@ -111,11 +121,14 @@ namespace FreeAccount.Api.Controllers
             if (!ValidateNif(nif, out IActionResult badNifResult))
                 return badNifResult;
 
-            string folderPath = @"C:\FreeAccount\Accounts";
+            string folderPath = _folderPath;
             string filePath = Path.Combine(folderPath, $"{nif}.txt");
 
             if (!System.IO.File.Exists(filePath))
                 return NotFound("A conta não existe.");
+
+            if (!IsValidEmail(updateRequest.Email))
+                return BadRequest("Email inválido.");
 
             string[] lines = System.IO.File.ReadAllLines(filePath);
             if (lines.Length < 3)
@@ -130,6 +143,9 @@ namespace FreeAccount.Api.Controllers
 
             if (!string.IsNullOrEmpty(updateRequest.Email))
                 email = updateRequest.Email;
+
+ 
+
 
             using (StreamWriter writer = new StreamWriter(filePath))
             {
@@ -162,7 +178,7 @@ namespace FreeAccount.Api.Controllers
             if (!ValidateNif(nif, out IActionResult badNifResult))
                 return badNifResult;
 
-            string folderPath = @"C:\FreeAccount\Accounts";
+            string folderPath = _folderPath;
             string filePath = Path.Combine(folderPath, $"{nif}.txt");
 
             if (!System.IO.File.Exists(filePath))
