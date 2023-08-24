@@ -2,16 +2,19 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Text.RegularExpressions;
 using System.IO;
+using FreeAccount.Api.Common;
+using MediatR;
+using FreeAccount.Domain.Commands.Account;
 
 namespace FreeAccount.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class AccountController : Controller
+    public class AccountController : ApiController
     {
         private readonly string _folderPath;
 
-        public AccountController()
+        public AccountController(ISender sender) : base(sender)
         {
             string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             _folderPath = Path.Combine(documentsPath, "FreeAccount", "Accounts");
@@ -32,37 +35,10 @@ namespace FreeAccount.Api.Controllers
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Create(CreateAccountRequest request, CancellationToken cancellationToken)
         {
-            if (!ValidateNif(request.Nif, out IActionResult badNifResult))
-                return badNifResult;
+            var command = new CreateAccountCommand(name:request.Name,nif:request.Nif,email:request.Email,amount:request.Amount);
+            var result = await _sender.Send(command, cancellationToken);
 
-            if (request.Amount < 0)
-                return BadRequest("Saldo inválido. O saldo deve ser maior ou igual a 0.");
-
-            if (!IsValidEmail(request.Email))
-                return BadRequest("Email inválido.");
-
-            string folderPath = _folderPath;
-            string filePath = Path.Combine(folderPath, $"{request.Nif}.txt");
-
-            if (!Directory.Exists(folderPath))
-                Directory.CreateDirectory(folderPath);
-
-            if (System.IO.File.Exists(filePath))
-                return BadRequest("A conta já existe.");
-
-            using (StreamWriter writer = new StreamWriter(filePath))
-            {
-                writer.WriteLine($"Nome: {request.Name}");
-                writer.WriteLine($"Email: {request.Email}");
-                writer.WriteLine($"Saldo: {request.Amount}");
-            }
-
-            var createAccountResponse = new CreateAccountResponse
-            {
-                Message = $"Conta criada com sucesso para {request.Name} - Email : {request.Email}"
-            };
-
-            return Ok(createAccountResponse);
+            return Ok(result);
         }
 
         private bool IsValidEmail(string email)

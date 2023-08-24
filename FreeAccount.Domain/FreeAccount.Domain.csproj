@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Abstractions\" />
+    <None Remove="Abstractions\Message\" />
+    <None Remove="Commands\" />
+    <None Remove="Commands\Account\" />
+    <None Remove="Commands\Transaction\" />
+    <None Remove="Querys\" />
+    <None Remove="Contract\" />
+    <None Remove="Contract\Account\" />
+    <None Remove="Exceptions\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Abstractions\" />
+    <Folder Include="Abstractions\Message\" />
+    <Folder Include="Commands\" />
+    <Folder Include="Commands\Account\" />
+    <Folder Include="Commands\Transaction\" />
+    <Folder Include="Querys\" />
+    <Folder Include="Contract\" />
+    <Folder Include="Contract\Account\" />
+    <Folder Include="Exceptions\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.1.1" />
+    <PackageReference Include="FluentValidation" Version="11.7.1" />
+    <PackageReference Include="Serilog.AspNetCore" Version="7.0.0" />
+  </ItemGroup>
+</Project>
