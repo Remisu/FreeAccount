@@ -11,10 +11,6 @@ namespace FreeAccount.Domain.Commands.Account
         {
             /*
 
-
-            if (!IsValidEmail(request.Email))
-                return BadRequest("Email inválido.");
-
             string folderPath = _folderPath;
             string filePath = Path.Combine(folderPath, $"{request.Nif}.txt");
 
@@ -23,14 +19,14 @@ namespace FreeAccount.Domain.Commands.Account
 
             if (System.IO.File.Exists(filePath))
                 return BadRequest("A conta já existe.");
-
-            using (StreamWriter writer = new StreamWriter(filePath))
-            {
-                writer.WriteLine($"Nome: {request.Name}");
-                writer.WriteLine($"Email: {request.Email}");
-                writer.WriteLine($"Saldo: {request.Amount}");
-            }
-
+            */
+            //using (StreamWriter writer = new StreamWriter(filePath))
+            //{
+            //    writer.WriteLine($"Nome: {request.Name}");
+            //    writer.WriteLine($"Email: {request.Email}");
+            //    writer.WriteLine($"Saldo: {request.Amount}");
+            //}
+            /*
             var createAccountResponse = new CreateAccountResponse
             {
                 Message = $"Conta criada com sucesso para {request.Name} - Email : {request.Email}"

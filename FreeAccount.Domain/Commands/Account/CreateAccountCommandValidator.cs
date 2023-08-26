@@ -7,6 +7,8 @@ namespace FreeAccount.Domain.Commands.Account
 	{
 		public CreateAccountCommandValidator()
 		{
+
+
             RuleFor(a => a.Nif)
                 .NotEmpty()
                 .Length(9)
