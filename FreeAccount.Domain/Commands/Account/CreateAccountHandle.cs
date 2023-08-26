@@ -10,12 +10,7 @@ namespace FreeAccount.Domain.Commands.Account
         public async Task<CreateAccountResponse> Handle(CreateAccountCommand request, CancellationToken cancellationToken)
         {
             /*
-            //throw new NotImplementedException();
-            if (!ValidateNif(request.Nif, out IActionResult badNifResult))
-                return badNifResult;
 
-            if (request.Amount < 0)
-                return BadRequest("Saldo inválido. O saldo deve ser maior ou igual a 0.");
 
             if (!IsValidEmail(request.Email))
                 return BadRequest("Email inválido.");
