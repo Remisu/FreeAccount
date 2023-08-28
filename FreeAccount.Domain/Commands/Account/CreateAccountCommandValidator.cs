@@ -9,8 +9,12 @@ namespace FreeAccount.Domain.Commands.Account
 		{
             RuleFor(a => a.Nif)
                 .NotEmpty()
+                .WithMessage("O NIF não pode estar vazio.")
                 .Length(9)
-                .WithMessage("O NIF deve conter exatamente 9 caracteres.");
+                .WithMessage("O NIF deve conter exatamente 9 caracteres.")
+                .Matches("^[0-9]*$")
+                .WithMessage("O NIF deve conter apenas números.");
+
 
             RuleFor(a => a.Amount)
                 .GreaterThanOrEqualTo(0)
@@ -18,6 +22,7 @@ namespace FreeAccount.Domain.Commands.Account
 
             RuleFor(a => a.Email)
                 .NotEmpty()
+                .WithMessage("O NIF não pode estar vazio.")
                 .EmailAddress()
                 .WithMessage("Email inválido.");
 
